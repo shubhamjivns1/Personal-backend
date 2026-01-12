@@ -40,19 +40,6 @@ app.use(
     })
 );
 
-/* =======================
-   DATABASE CHECK
-======================= */
-// MySQL Test
-mysqlDB
-    .getConnection()
-    .then((connection) => {
-        console.log("✅ MySQL Database Connected");
-        connection.release();
-    })
-    .catch((error) => {
-        console.error("❌ MySQL DB Error:", error);
-    });
 
 /* =======================
    ROUTES
