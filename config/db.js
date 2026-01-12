@@ -3,19 +3,22 @@ import dotenv from "dotenv";
 
 dotenv.config();
 
-export const pool = mysql.createPool({
+const db = mysql.createPool({
     host: process.env.DB_HOST,
     user: process.env.DB_USER,
-    password: process.env.DB_PASS,
+    password: process.env.DB_PASSWORD,
     database: process.env.DB_NAME,
+    port: Number(process.env.DB_PORT) || 3306, // ✅ REQUIRED
     waitForConnections: true,
     connectionLimit: 10,
     queueLimit: 0,
-    enableKeepAlive: true,
-    keepAliveInitialDelay: 0
+    connectTimeout: 30000, // 🔥 IMPORTANT for Hostinger
+    ssl: {
+        rejectUnauthorized: false // 🔥 REQUIRED for Hostinger
+    }
 });
 
+console.log("MySQL Connected ✅");
 
-db.getConnection()
-    .then(() => console.log("✅ MySQL Connected"))
-    .catch((err) => console.error("❌ DB Error:", err));
+export { db };
+
